@@ -1,0 +1,202 @@
+# Federated Learning Configuration
+
+federated:
+  # Number of federated learning rounds
+  num_rounds: 50
+  
+  # Minimum number of clients required for training
+  min_clients: 3
+  
+  # Fraction of clients to sample for training
+  fraction_fit: 1.0
+  
+  # Fraction of clients to sample for evaluation
+  fraction_evaluate: 1.0
+  
+  # Minimum number of clients for fit
+  min_fit_clients: 3
+  
+  # Minimum number of clients for evaluation
+  min_evaluate_clients: 3
+  
+  # Strategy for aggregation
+  strategy: "FedAvg"  # Options: FedAvg, FedProx, FedAdam
+  
+  # Server address
+  server_address: "localhost:8080"
+
+model:
+  # Neural network architecture
+  input_size: 13  # Will be set based on dataset
+  hidden_layers: [64, 32, 16]
+  output_size: 1
+  
+  # Activation function
+  activation: "relu"  # Options: relu, tanh, sigmoid
+  
+  # Dropout rate for regularization
+  dropout: 0.3
+  
+  # Batch normalization
+  batch_norm: true
+
+training:
+  # Batch size for local training
+  batch_size: 32
+  
+  # Number of local epochs per round
+  local_epochs: 5
+  
+  # Learning rate
+  learning_rate: 0.001
+  
+  # Optimizer
+  optimizer: "adam"  # Options: adam, sgd, adamw
+  
+  # Learning rate scheduler
+  lr_scheduler: "step"  # Options: step, cosine, exponential, none
+  lr_decay: 0.95
+  lr_step_size: 10
+  
+  # Weight decay (L2 regularization)
+  weight_decay: 0.0001
+  
+  # Loss function
+  loss_function: "bce"  # Options: bce, focal, weighted_bce
+  
+  # Early stopping
+  early_stopping: true
+  patience: 10
+  min_delta: 0.001
+
+data:
+  # Dataset to use
+  dataset: "heart_disease"  # Options: heart_disease, diabetes, both
+  
+  # Train/validation/test split
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  
+  # Data partitioning strategy
+  partition_strategy: "heterogeneous"  # Options: iid, heterogeneous, pathological
+  
+  # Dirichlet concentration parameter (for heterogeneous split)
+  alpha: 0.5
+  
+  # Class imbalance handling
+  handle_imbalance: true
+  imbalance_method: "smote"  # Options: smote, oversample, undersample, none
+  
+  # Feature scaling
+  scaling: "standard"  # Options: standard, minmax, robust, none
+  
+  # Random seed for reproducibility
+  random_seed: 42
+
+privacy:
+  # Enable differential privacy
+  enable_dp: true
+  
+  # Privacy budget parameters
+  epsilon: 1.0
+  delta: 1.0e-5
+  
+  # Gradient clipping threshold
+  max_grad_norm: 1.0
+  
+  # Noise multiplier (auto-computed if null)
+  noise_multiplier: null
+  
+  # Enable secure aggregation
+  enable_secure_aggregation: false
+  
+  # Secure aggregation method
+  secure_agg_method: "simple"  # Options: simple, homomorphic
+  
+  # Privacy accounting method
+  accounting_method: "rdp"  # Options: rdp, gdp
+
+explainability:
+  # Enable SHAP explanations
+  enable_shap: true
+  
+  # SHAP explainer type
+  shap_explainer: "deep"  # Options: deep, gradient, kernel
+  
+  # Number of background samples for SHAP
+  shap_background_samples: 100
+  
+  # Enable LIME explanations
+  enable_lime: true
+  
+  # Number of samples for LIME
+  lime_num_samples: 5000
+  
+  # Number of features to show in explanations
+  num_features: 10
+  
+  # Generate explanations every N rounds
+  explanation_frequency: 10
+  
+  # Explanation stability tracking
+  track_stability: true
+
+evaluation:
+  # Metrics to compute
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1_score
+    - auroc
+    - auprc
+  
+  # Evaluation frequency (every N rounds)
+  eval_frequency: 1
+  
+  # Save best model based on metric
+  save_best_metric: "auroc"
+  
+  # Compute confusion matrix
+  confusion_matrix: true
+  
+  # Calibration analysis
+  calibration_analysis: true
+
+logging:
+  # Log level
+  log_level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR
+  
+  # Log directory
+  log_dir: "logs"
+  
+  # Enable TensorBoard logging
+  tensorboard: true
+  tensorboard_dir: "tensorboard_logs"
+  
+  # Enable Weights & Biases logging
+  wandb: false
+  wandb_project: "federated-disease-prediction"
+  wandb_entity: null
+  
+  # Save frequency (every N rounds)
+  save_frequency: 10
+  
+  # Model checkpoint directory
+  checkpoint_dir: "checkpoints"
+
+paths:
+  # Data paths
+  data_dir: "data"
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  partitions_dir: "data/partitions"
+  
+  # Model paths
+  models_dir: "models"
+  
+  # Results paths
+  results_dir: "results"
+  explanations_dir: "results/explanations"
+  plots_dir: "results/plots"

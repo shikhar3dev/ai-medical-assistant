@@ -1,0 +1,21 @@
+[build]
+  publish = "."
+  command = "echo 'Streamlit app ready for deployment'"
+
+[build.environment]
+  PYTHON_VERSION = "3.9"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  NODE_ENV = "production"
+
+# Streamlit specific configuration
+[context.deploy-preview]
+  command = "streamlit run enhanced_dashboard.py --server.port 8501 --server.address 0.0.0.0"
+
+[context.branch-deploy]
+  command = "streamlit run enhanced_dashboard.py --server.port 8501 --server.address 0.0.0.0"

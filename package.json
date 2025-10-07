@@ -1,0 +1,26 @@
+{
+  "name": "ai-medical-assistant",
+  "version": "1.0.0",
+  "description": "Privacy-Preserving Federated Learning for Healthcare AI",
+  "main": "app.py",
+  "scripts": {
+    "start": "streamlit run enhanced_dashboard.py --server.port=$PORT --server.address=0.0.0.0",
+    "dev": "streamlit run enhanced_dashboard.py",
+    "build": "echo 'Build complete - Streamlit app ready'",
+    "test": "python -m pytest tests/"
+  },
+  "keywords": [
+    "healthcare",
+    "ai",
+    "federated-learning",
+    "medical",
+    "privacy",
+    "streamlit"
+  ],
+  "author": "AI Medical Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.9.0"
+  }
+}

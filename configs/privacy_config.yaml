@@ -1,0 +1,134 @@
+# Privacy Configuration
+
+differential_privacy:
+  # Privacy budget allocation
+  total_epsilon: 1.0
+  total_delta: 1.0e-5
+  
+  # Per-round privacy budget
+  epsilon_per_round: null  # Auto-computed based on total_epsilon and num_rounds
+  
+  # Gradient clipping
+  max_grad_norm: 1.0
+  
+  # Noise mechanism
+  noise_mechanism: "gaussian"  # Options: gaussian, laplace
+  
+  # Noise multiplier (sigma)
+  noise_multiplier: 1.1
+  
+  # Privacy accounting
+  accounting:
+    method: "rdp"  # Options: rdp, gdp, moments
+    orders: [1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 8.0, 16.0, 32.0, 64.0]
+  
+  # Adaptive clipping
+  adaptive_clipping: false
+  clipping_percentile: 50
+  
+  # Per-sample gradient computation
+  batch_first: true
+  
+  # Privacy loss tracking
+  track_privacy_loss: true
+  privacy_loss_log: "logs/privacy_loss.csv"
+
+secure_aggregation:
+  # Enable secure aggregation
+  enabled: false
+  
+  # Aggregation method
+  method: "simple"  # Options: simple, homomorphic, secret_sharing
+  
+  # Homomorphic encryption parameters (if method=homomorphic)
+  he_params:
+    scheme: "paillier"  # Options: paillier, ckks
+    key_size: 2048
+    precision: 1e-6
+  
+  # Secret sharing parameters (if method=secret_sharing)
+  secret_sharing_params:
+    threshold: 2  # Minimum number of clients needed to reconstruct
+    num_shares: 3  # Total number of shares
+  
+  # Dropout resilience
+  dropout_resilience: true
+  min_clients_for_aggregation: 2
+
+data_privacy:
+  # Data anonymization
+  anonymize_data: false
+  
+  # Remove direct identifiers
+  remove_identifiers: true
+  identifiers: ["patient_id", "name", "ssn", "address"]
+  
+  # K-anonymity
+  k_anonymity: false
+  k_value: 5
+  quasi_identifiers: ["age", "zip_code", "gender"]
+  
+  # Data minimization
+  feature_selection: false
+  min_features: 5
+
+communication_privacy:
+  # Encrypt communications
+  encrypt_communications: false
+  
+  # Encryption method
+  encryption_method: "tls"  # Options: tls, aes
+  
+  # Compression before encryption
+  compress_before_encrypt: true
+  compression_method: "gzip"  # Options: gzip, lz4, zstd
+
+privacy_auditing:
+  # Enable privacy auditing
+  enabled: true
+  
+  # Audit log path
+  audit_log: "logs/privacy_audit.log"
+  
+  # Track privacy budget consumption
+  track_budget: true
+  
+  # Alert thresholds
+  alert_epsilon_threshold: 0.9  # Alert when 90% of budget is consumed
+  
+  # Privacy attack simulation
+  simulate_attacks: false
+  attack_types: ["membership_inference", "model_inversion"]
+
+compliance:
+  # Regulatory compliance
+  hipaa_compliant: true
+  gdpr_compliant: true
+  
+  # Data retention policy
+  data_retention_days: 90
+  
+  # Consent management
+  require_consent: true
+  consent_log: "logs/consent.log"
+  
+  # Right to be forgotten
+  enable_data_deletion: true
+  
+  # Audit trail
+  maintain_audit_trail: true
+  audit_retention_days: 365
+
+privacy_utility_tradeoff:
+  # Target utility threshold
+  min_accuracy: 0.75
+  min_auroc: 0.80
+  
+  # Privacy budget optimization
+  optimize_budget: false
+  optimization_metric: "auroc"
+  
+  # Adaptive privacy
+  adaptive_privacy: false
+  increase_privacy_if_utility_high: true
+  utility_threshold_for_increase: 0.90
