@@ -30,8 +30,8 @@ plotly>=5.15.0
 streamlit>=1.25.0
 streamlit-aggrid>=0.3.4
 
-# Computer Vision
-opencv-python>=4.8.0
+# Computer Vision (headless for cloud deployment)
+opencv-python-headless>=4.8.0
 Pillow>=10.0.0
 
 # Configuration

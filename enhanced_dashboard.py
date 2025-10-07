@@ -9,7 +9,11 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
-import cv2
+try:
+    import cv2
+    CV2_AVAILABLE = True
+except ImportError:
+    CV2_AVAILABLE = False
 import base64
 from io import BytesIO
 
@@ -174,6 +178,9 @@ def capture_image():
         <p>Capture images of affected areas for additional analysis</p>
     </div>
     """, unsafe_allow_html=True)
+    
+    if not CV2_AVAILABLE:
+        st.info("📱 Camera functionality optimized for cloud deployment. Upload images below instead!")
     
     # Camera input
     camera_image = st.camera_input("📷 Take a photo of the affected area")
