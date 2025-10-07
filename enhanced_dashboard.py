@@ -9,6 +9,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
+from typing import Dict, List, Any
 try:
     import cv2
     CV2_AVAILABLE = True
@@ -22,6 +23,9 @@ project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
 from federated.models import DiseasePredictor
+from dermatology_analysis import DermatologyAnalyzer
+from ocular_analysis import OcularAnalyzer
+from clinical_model import ClinicalDermatologyModel
 
 # Page config
 st.set_page_config(
@@ -269,6 +273,37 @@ def get_medical_recommendations(image_type, mean_intensity, std_intensity):
     
     return recommendations
 
+def _detect_image_type(image_array: np.ndarray, filename: str) -> str:
+    """Detect if image is ocular (eye) or dermatological (skin)"""
+    filename_lower = filename.lower()
+    
+    # Check filename for eye-related keywords
+    eye_keywords = ['eye', 'ocular', 'pupil', 'iris', 'conjunctiva', 'sclera', 'cornea']
+    if any(keyword in filename_lower for keyword in eye_keywords):
+        return "ocular"
+    
+    # Analyze image characteristics for eye detection
+    if len(image_array.shape) == 3:
+        # Look for circular dark regions (pupils) and color patterns typical of eyes
+        gray = np.mean(image_array, axis=2)
+        
+        # Check for very dark circular regions (pupil-like)
+        very_dark = gray < np.percentile(gray, 5)
+        dark_pixel_ratio = np.sum(very_dark) / (gray.shape[0] * gray.shape[1])
+        
+        # Check for color patterns typical of eyes (iris colors)
+        if image_array.shape[2] >= 3:
+            # Look for brown/blue/green iris-like colors
+            hsv_approx = np.mean(image_array, axis=(0, 1))
+            color_variance = np.std(hsv_approx)
+            
+            # Eyes typically have distinct color regions
+            if dark_pixel_ratio > 0.02 and color_variance > 30:  # Likely has pupil and color variation
+                return "ocular"
+    
+    # Default to dermatological analysis
+    return "dermatological"
+
 def capture_image():
     """Camera capture functionality"""
     st.markdown("""
@@ -290,7 +325,7 @@ def capture_image():
         
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.image(image, caption="Captured Medical Image", use_column_width=True)
+            st.image(image, caption="Captured Medical Image", use_container_width=True)
         
         # Simulate AI analysis
         st.success("✅ Image captured successfully!")
@@ -325,66 +360,141 @@ def capture_image():
             col1, col2 = st.columns([1, 1])
             
             with col1:
-                st.image(image, caption=f"Uploaded: {uploaded_file.name}", use_column_width=True)
+                st.image(image, caption=f"Uploaded: {uploaded_file.name}", use_container_width=True)
             
             with col2:
-                # Perform AI analysis
+                # Perform Enhanced AI Analysis
                 st.markdown("### 🔍 AI Analysis Results")
                 
                 # Analyze image properties
                 width, height = image.size
                 image_array = np.array(image)
                 
-                # Basic image analysis
-                if len(image_array.shape) == 3:
-                    channels = image_array.shape[2]
-                    mean_intensity = np.mean(image_array)
-                    std_intensity = np.std(image_array)
-                else:
-                    channels = 1
-                    mean_intensity = np.mean(image_array)
-                    std_intensity = np.std(image_array)
+                # Determine image type and select appropriate analyzer
+                image_type = self._detect_image_type(image_array, uploaded_file.name)
                 
-                # Determine image type based on characteristics
-                image_type = analyze_medical_image_type(uploaded_file.name, image_array)
+                if image_type == "ocular":
+                    # Initialize ocular analyzer for eye images
+                    ocular_analyzer = OcularAnalyzer()
+                    
+                    # Perform comprehensive ocular analysis
+                    with st.spinner("👁️ Analyzing ocular image for systemic diseases..."):
+                        analysis_results = ocular_analyzer.analyze_ocular_image(image_array, uploaded_file.name)
+                        analysis_type = "ocular"
+                else:
+                    # Initialize clinical dermatology model for real diagnosis
+                    clinical_model = ClinicalDermatologyModel()
+                    
+                    # Perform clinical-grade dermatological diagnosis
+                    with st.spinner("🏥 Performing clinical dermatological diagnosis..."):
+                        analysis_results = clinical_model.diagnose_condition(image_array)
+                        analysis_type = "clinical_dermatological"
                 
                 # Display analysis results
                 st.success("✅ **Analysis Complete!**")
                 
                 # Image Properties
                 st.markdown("**📊 Image Properties:**")
+                channels = image_array.shape[2] if len(image_array.shape) == 3 else 1
                 st.write(f"• **Resolution**: {width} × {height} pixels")
                 st.write(f"• **Channels**: {channels} ({'Color' if channels == 3 else 'Grayscale'})")
                 st.write(f"• **File Size**: {uploaded_file.size / 1024:.1f} KB")
+                if analysis_type == "ocular":
+                    st.write(f"• **Analysis Type**: 👁️ Ocular Analysis for Systemic Diseases")
+                    _display_ocular_results(analysis_results)
+                elif analysis_type == "clinical_dermatological":
+                    st.write(f"• **Analysis Type**: 🏥 Clinical Dermatological Diagnosis")
+                    _display_clinical_dermatological_results(analysis_results)
+                else:
+                    st.write(f"• **Analysis Type**: 🔬 Dermatological Analysis")
+                    _display_dermatological_results(analysis_results)
                 
-                # AI Analysis Results
-                st.markdown("**🤖 AI Analysis:**")
-                st.write(f"• **Image Type**: {image_type}")
-                st.write(f"• **Quality Score**: {min(95, max(70, 85 + (std_intensity/10))):.0f}%")
-                st.write(f"• **Contrast Level**: {'High' if std_intensity > 50 else 'Medium' if std_intensity > 25 else 'Low'}")
-                
-                # Medical Insights
-                medical_insights = get_medical_insights(image_type, mean_intensity, std_intensity, width, height)
-                st.markdown("**🏥 Medical Insights:**")
-                for insight in medical_insights:
-                    st.write(f"• {insight}")
-                
-                # Recommendations
-                recommendations = get_medical_recommendations(image_type, mean_intensity, std_intensity)
-                st.markdown("**💡 Recommendations:**")
-                for rec in recommendations:
+                # Medical Recommendations (common to both types)
+                st.markdown("**💡 Medical Recommendations:**")
+                for i, rec in enumerate(analysis_results['recommendations'][:6], 1):  # Show top 6 recommendations
                     st.write(f"• {rec}")
                 
-                # Confidence and Next Steps
-                confidence = min(95, max(75, 80 + (std_intensity/20)))
-                st.markdown(f"**🎯 Analysis Confidence**: {confidence:.0f}%")
-                
-                if confidence > 85:
-                    st.success("High confidence analysis - Results are reliable")
-                elif confidence > 75:
-                    st.warning("Medium confidence - Consider additional imaging")
+                # Overall Confidence (common to both types)
+                if analysis_type == "clinical_dermatological":
+                    confidence = analysis_results['primary_diagnosis']['confidence']
                 else:
-                    st.error("Low confidence - Recommend professional review")
+                    confidence = analysis_results.get('confidence_score', 0.8)
+                st.markdown(f"**🎯 Analysis Confidence**: {confidence*100:.0f}%")
+                
+                if confidence > 0.85:
+                    st.success("High confidence - Analysis results are reliable for clinical consideration")
+                elif confidence > 0.75:
+                    st.warning("Medium confidence - Consider additional imaging or professional review")
+                else:
+                    st.error("Lower confidence - Professional evaluation strongly recommended")
+                
+                # Clinical Notes
+                if analysis_type == "ocular":
+                    # Ocular-specific clinical notes
+                    predictions = analysis_results['systemic_predictions']
+                    high_risk_conditions = [pred['condition_name'] for pred in predictions.values() if pred['risk_score'] > 0.7]
+                    
+                    st.markdown("**📋 Clinical Notes:**")
+                    if high_risk_conditions:
+                        st.warning(f"""
+                        **High Risk Detected**: {', '.join(high_risk_conditions[:2])}
+                        
+                        **Systemic Screening**: Blood glucose, lipid panel, and comprehensive eye examination recommended.
+                        
+                        **Next Steps**: Urgent medical evaluation for systemic disease screening and management.
+                        """)
+                    else:
+                        st.info(f"""
+                        **Screening Results**: Low-moderate risk for systemic diseases detected.
+                        
+                        **Monitoring**: Regular health screenings and eye examinations recommended.
+                        
+                        **Next Steps**: Routine follow-up with healthcare provider.
+                        """)
+                elif analysis_type == "clinical_dermatological":
+                    # Clinical dermatological notes
+                    primary_dx = analysis_results['primary_diagnosis']
+                    severity = analysis_results['severity_assessment']
+                    follow_up = analysis_results['follow_up']
+                    
+                    st.markdown("**📋 Clinical Assessment:**")
+                    if severity['severity'] == "Severe":
+                        st.error(f"""
+                        **Clinical Diagnosis**: {primary_dx['condition']} - {severity['severity']} ({severity['scale']} Score: {severity['score']})
+                        
+                        **Urgency**: {follow_up['urgency']} evaluation required within {follow_up['timeframe']}
+                        
+                        **Management**: Immediate dermatological consultation and aggressive treatment indicated.
+                        """)
+                    elif severity['severity'] == "Moderate":
+                        st.warning(f"""
+                        **Clinical Diagnosis**: {primary_dx['condition']} - {severity['severity']} ({severity['scale']} Score: {severity['score']})
+                        
+                        **Follow-up**: {follow_up['timeframe']} for treatment response assessment
+                        
+                        **Management**: Topical therapy initiation with specialist consultation if needed.
+                        """)
+                    else:
+                        st.info(f"""
+                        **Clinical Diagnosis**: {primary_dx['condition']} - {severity['severity']} ({severity['scale']} Score: {severity['score']})
+                        
+                        **Follow-up**: Routine monitoring in {follow_up['timeframe']}
+                        
+                        **Management**: Conservative treatment with primary care follow-up adequate.
+                        """)
+                else:
+                    # Standard dermatological notes
+                    condition_assessment = analysis_results['condition_assessment']
+                    severity_analysis = analysis_results['severity_analysis']
+                    
+                    st.markdown("**📋 Clinical Notes:**")
+                    st.info(f"""
+                    **Key Findings**: {condition_assessment['primary_condition']} with {severity_analysis['level'].lower()} severity.
+                    
+                    **Notable Features**: {', '.join(condition_assessment['characteristics_found'][:3])}
+                    
+                    **Next Steps**: Professional dermatological evaluation recommended for definitive diagnosis and treatment planning.
+                    """)
             
             st.markdown("---")
 
@@ -926,6 +1036,151 @@ def show_about():
     and should not replace professional medical judgment. Always consult qualified healthcare 
     providers for medical decisions.
     """)
+
+def _display_ocular_results(analysis_results: Dict[str, Any]):
+    """Display ocular analysis results"""
+    
+    # Systemic Disease Predictions
+    st.markdown("**🩺 Systemic Disease Assessment:**")
+    predictions = analysis_results['systemic_predictions']
+    
+    for condition_key, prediction in predictions.items():
+        risk_score = prediction['risk_score']
+        condition_name = prediction['condition_name']
+        clinical_sig = prediction['clinical_significance']
+        
+        # Color code based on risk
+        if risk_score >= 0.7:
+            risk_color = "🔴"
+            risk_level = "High Risk"
+        elif risk_score >= 0.5:
+            risk_color = "🟡"
+            risk_level = "Moderate Risk"
+        else:
+            risk_color = "🟢"
+            risk_level = "Low Risk"
+        
+        st.write(f"• **{condition_name}**: {risk_color} {risk_level} ({risk_score*100:.1f}%)")
+        st.write(f"  └─ {clinical_sig}")
+    
+    # Anatomical Analysis
+    anatomical = analysis_results['anatomical_analysis']
+    st.markdown("**👁️ Anatomical Assessment:**")
+    st.write(f"• **Pupil-to-Iris Ratio**: {anatomical['pupil_to_iris_ratio']:.2f}")
+    st.write(f"• **Image Quality Score**: {anatomical['image_quality']*100:.1f}%")
+    st.write(f"• **Anatomical Completeness**: {anatomical['anatomical_completeness']*100:.1f}%")
+    
+    # Pupil Analysis
+    pupil = analysis_results['pupil_analysis']
+    st.markdown("**🔵 Pupil Analysis:**")
+    st.write(f"• **Pupil Size Ratio**: {pupil['pupil_size_ratio']*100:.1f}% of image")
+    st.write(f"• **Pupil Regularity**: {pupil['pupil_regularity']*100:.1f}%")
+    st.write(f"• **Red Reflex Quality**: {pupil['red_reflex_quality']*100:.1f}%")
+    
+    diabetes_signs = pupil['diabetes_risk_indicators']
+    st.write(f"• **Diabetes Risk Score**: {diabetes_signs['overall_diabetes_risk']*100:.1f}%")
+    
+    # Conjunctival Analysis
+    conjunctival = analysis_results['conjunctival_analysis']
+    st.markdown("**🩸 Conjunctival Vessel Analysis:**")
+    st.write(f"• **Vessel Density**: {conjunctival['vessel_density']*100:.1f}%")
+    st.write(f"• **Vessel Tortuosity**: {conjunctival['vessel_tortuosity']*100:.1f}%")
+    st.write(f"• **Microaneurysms**: {'Detected' if conjunctival['microaneurysms_detected'] else 'Not detected'}")
+    st.write(f"• **Hemorrhages**: {'Present' if conjunctival['hemorrhages_detected'] else 'Absent'}")
+
+def _display_clinical_dermatological_results(analysis_results: Dict[str, Any]):
+    """Display clinical dermatological diagnosis results"""
+    
+    # Primary Diagnosis
+    primary_dx = analysis_results['primary_diagnosis']
+    st.markdown("**🩺 Clinical Diagnosis:**")
+    st.write(f"• **Primary Diagnosis**: {primary_dx['condition']}")
+    st.write(f"• **Diagnostic Confidence**: {primary_dx['confidence']*100:.1f}%")
+    
+    # Differential Diagnoses
+    if primary_dx['differential_diagnoses']:
+        st.markdown("**🔍 Differential Diagnoses:**")
+        for i, (condition, score) in enumerate(primary_dx['differential_diagnoses'], 1):
+            condition_name = condition.replace('_', ' ').title()
+            st.write(f"   {i}. {condition_name} ({score*100:.1f}%)")
+    
+    # Clinical Severity Assessment
+    severity = analysis_results['severity_assessment']
+    st.markdown("**📊 Severity Assessment:**")
+    st.write(f"• **Scale Used**: {severity['scale']}")
+    st.write(f"• **Severity Score**: {severity['score']}")
+    st.write(f"• **Severity Level**: {severity['severity']}")
+    
+    if 'components' in severity:
+        st.markdown("**📈 Severity Components:**")
+        for component, value in severity['components'].items():
+            component_name = component.replace('_', ' ').title()
+            st.write(f"   • {component_name}: {value}")
+    
+    # Clinical Features
+    features = analysis_results['clinical_features']
+    st.markdown("**🔬 Clinical Features Detected:**")
+    
+    # Erythema Analysis
+    if 'erythema_percentage' in features:
+        st.write(f"• **Erythema**: {features['erythema_percentage']:.1f}% coverage, intensity {features.get('erythema_intensity', 0)*100:.1f}%")
+    
+    # Scaling Analysis
+    if 'scale_percentage' in features:
+        st.write(f"• **Scaling**: {features['scale_percentage']:.1f}% coverage, type score {features.get('scale_type', 0):.1f}")
+    
+    # Morphological Features
+    if 'lesion_area' in features:
+        st.write(f"• **Lesion Area**: {features['lesion_area']:.0f} pixels")
+        st.write(f"• **Border Regularity**: {features.get('border_regularity', 0)*100:.1f}%")
+        st.write(f"• **Compactness**: {features.get('compactness', 0):.2f}")
+    
+    # Follow-up Recommendations
+    follow_up = analysis_results['follow_up']
+    st.markdown("**📅 Follow-up Plan:**")
+    st.write(f"• **Urgency**: {follow_up['urgency']}")
+    st.write(f"• **Timeframe**: {follow_up['timeframe']}")
+    st.write(f"• **Specialist**: {follow_up['specialist']}")
+
+def _display_dermatological_results(analysis_results: Dict[str, Any]):
+    """Display dermatological analysis results"""
+    
+    # Primary Condition Assessment
+    condition_assessment = analysis_results['condition_assessment']
+    st.markdown("**🩺 Primary Assessment:**")
+    st.write(f"• **Likely Condition**: {condition_assessment['primary_condition']}")
+    st.write(f"• **Assessment Confidence**: {condition_assessment['confidence']*100:.1f}%")
+    
+    # Severity Analysis
+    severity_analysis = analysis_results['severity_analysis']
+    severity_color = "🔴" if severity_analysis['level'] == "Severe" else "🟡" if severity_analysis['level'] == "Moderate" else "🟢"
+    st.markdown("**📈 Severity Analysis:**")
+    st.write(f"• **Severity Level**: {severity_color} {severity_analysis['level']}")
+    st.write(f"• **Affected Area**: {severity_analysis['affected_area_percentage']:.1f}% of visible area")
+    st.write(f"• **Inflammation Level**: {severity_analysis['inflammation_level']*100:.1f}%")
+    st.write(f"• **Redness Intensity**: {severity_analysis['redness_intensity']*100:.1f}%")
+    
+    # Morphological Characteristics
+    morphology = analysis_results['morphology_analysis']
+    st.markdown("**🔬 Morphological Features:**")
+    if morphology['area'] > 0:
+        st.write(f"• **Border Characteristics**: {morphology['border_regularity']}")
+        st.write(f"• **Shape Regularity**: {morphology['circularity']:.2f} (1.0 = perfect circle)")
+        st.write(f"• **Aspect Ratio**: {morphology['aspect_ratio']:.2f}")
+    
+    # Texture Analysis
+    texture = analysis_results['texture_analysis']
+    st.markdown("**🎨 Texture Analysis:**")
+    st.write(f"• **Surface Description**: {texture['texture_description']}")
+    st.write(f"• **Roughness Score**: {texture['roughness']*100:.1f}%")
+    st.write(f"• **Edge Density**: {texture['edge_density']*100:.1f}%")
+    
+    # Color Analysis
+    color_analysis = analysis_results['color_analysis']
+    st.markdown("**🌈 Color Characteristics:**")
+    st.write(f"• **Redness Present**: {'Yes' if color_analysis['has_redness'] else 'No'}")
+    st.write(f"• **Scaling/Flaking**: {'Detected' if color_analysis['has_scaling'] else 'Not detected'}")
+    st.write(f"• **Color Uniformity**: {(1-color_analysis['color_uniformity'])*100:.1f}%")
 
 if __name__ == "__main__":
     main()
