@@ -371,7 +371,7 @@ def capture_image():
                 image_array = np.array(image)
                 
                 # Determine image type and select appropriate analyzer
-                image_type = self._detect_image_type(image_array, uploaded_file.name)
+                image_type = _detect_image_type(image_array, uploaded_file.name)
                 
                 if image_type == "ocular":
                     # Initialize ocular analyzer for eye images
