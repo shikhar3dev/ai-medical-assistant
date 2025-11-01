@@ -1,4 +1,4 @@
-"""Streamlit Dashboard for Federated Learning Disease Prediction"""
+"""Streamlit Dashboard for Federated Learning Disease Prediction."""
 
 import sys
 from pathlib import Path
