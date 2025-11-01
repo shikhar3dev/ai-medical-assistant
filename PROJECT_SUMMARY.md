@@ -1,6 +1,6 @@
 # Project Summary: Privacy-Preserving Federated Learning for Disease Prediction
 
-## 🎯 What You've Built
+## 🎯 What we've Built
 
 A **production-ready federated learning system** that combines:
 - **Privacy preservation** through differential privacy
