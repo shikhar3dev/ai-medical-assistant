@@ -1,4 +1,4 @@
-"""SHAP-based Explainability for Disease Prediction Models"""
+"""SHAP-based Explainability for Disease Prediction Models."""
 
 import argparse
 from pathlib import Path
