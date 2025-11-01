@@ -1,4 +1,4 @@
-"""Main application entry point for deployment"""
+"""Main application entry point for deployment."""
 
 import os
 import sys
