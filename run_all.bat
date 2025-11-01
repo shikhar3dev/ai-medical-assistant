@@ -60,5 +60,5 @@ echo    cd c:\ai_disease_prediction
 echo    venv\Scripts\activate
 echo    python federated\client.py --client-id 2
 echo.
-echo ============================================================
+echo ===========================================================
 pause
