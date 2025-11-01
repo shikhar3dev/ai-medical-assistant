@@ -1,6 +1,4 @@
-"""
-Test script for the enhanced ocular analyzer
-"""
+"""Test script for the enhanced ocular analyzer"""
 
 import numpy as np
 from PIL import Image
