@@ -44,6 +44,7 @@ setup(
             "sphinx-rtd-theme>=1.3.0",
         ],
     },
+    
     entry_points={
         "console_scripts": [
             "fl-server=federated.server:main",
