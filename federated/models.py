@@ -1,4 +1,4 @@
-"""Neural Network Models for Disease Prediction"""
+"""Neural Network Models for Disease Prediction."""
 
 import torch
 import torch.nn as nn
