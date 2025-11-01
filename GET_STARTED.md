@@ -331,7 +331,7 @@ Congratulations! You now have everything you need to:
 - ✅ Preserve privacy with differential privacy
 - ✅ Explain predictions with SHAP and LIME
 - ✅ Visualize results in interactive dashboard
-- ✅ Conduct privacy-preserving healthcare AI research
+- ✅ Conduct privacy-preserving healthcare AI research.
 
 **Happy Learning!** 🚀
 
