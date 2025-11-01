@@ -1,3 +1,4 @@
+
 @echo off
 echo ============================================================
 echo 🚀 DEPLOYING AI MEDICAL ASSISTANT LOCALLY
@@ -8,7 +9,7 @@ cd /d "%~dp0"
 set PYTHONPATH=%CD%;%PYTHONPATH%
 call venv\Scripts\activate.bat
 
-echo 🏥 Starting AI Medical Assistant...
+echo 🏥 Starting AI Medical Assistant
 echo 📱 Enhanced UI with camera support
 echo 🔒 Privacy-preserving federated learning
 echo 🧠 99%% accuracy disease prediction
