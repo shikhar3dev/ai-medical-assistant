@@ -155,4 +155,4 @@ Then start the 3 clients and watch your federated learning system train!
 
 ---
 
-**Questions?** Check [HOW_TO_RUN.md](HOW_TO_RUN.md) or [FIXED_AND_READY.md](FIXED_AND_READY.md)
+**Questions?** Check [HOW_TO_RUN.md](HOW_TO_RUN.md) or [FIXED_AND_READY.md](FIXED_AND_READY.md).
