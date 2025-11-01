@@ -1,4 +1,4 @@
-"""Simple training monitor"""
+"""Simple training monitor."""
 
 import time
 import os
