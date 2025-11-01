@@ -1,4 +1,5 @@
 # Privacy Configuration
+
 differential_privacy:
   # Privacy budget allocation
   total_epsilon: 1.0
