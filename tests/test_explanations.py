@@ -1,4 +1,4 @@
-"""Tests for Explainability Components"""
+"""Tests for Explainability Components."""
 
 import pytest
 import torch
