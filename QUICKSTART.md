@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get your federated learning system up and running in minutes!
+Get your federated learning system up and running in minutes!.
 
 ## Prerequisites
 
