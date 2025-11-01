@@ -11,4 +11,5 @@ echo.
 echo Dashboard will open at: http://localhost:8501
 echo.
 streamlit run enhanced_dashboard.py
+
 pause
