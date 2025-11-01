@@ -1,4 +1,4 @@
-"""Quick training script - bypasses FL for immediate results"""
+"""Quick training script - bypasses FL for immediate results."""
 
 import sys
 from pathlib import Path
