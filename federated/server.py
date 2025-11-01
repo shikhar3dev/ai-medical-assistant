@@ -1,4 +1,4 @@
-"""Federated Learning Server Implementation"""
+"""Federated Learning Server Implementation."""
 
 import argparse
 import os
