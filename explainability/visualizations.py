@@ -1,4 +1,4 @@
-"""Visualization Tools for Explainability"""
+"""Visualization Tools for Explainability."""
 
 from pathlib import Path
 from typing import List, Optional, Dict
