@@ -1,6 +1,4 @@
-"""
-Test script for the enhanced dermatology analyzer
-"""
+"""Test script for the enhanced dermatology analyzer"""
 
 import numpy as np
 from PIL import Image
