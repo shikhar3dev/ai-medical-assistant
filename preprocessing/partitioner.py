@@ -1,4 +1,4 @@
-"""Data Partitioning for Federated Learning"""
+"""Data Partitioning for Federated Learning."""
 
 import argparse
 from pathlib import Path
