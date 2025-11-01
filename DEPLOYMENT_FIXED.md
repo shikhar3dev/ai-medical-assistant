@@ -25,7 +25,7 @@ st.image(image, use_container_width=True)
 ```
 
 #### **3. Real Clinical Model Integrated**
-- ✅ Replaced demo placeholders with actual clinical diagnosis
+- ✅ Replaced demo placeholders with actual clinical diagnosis.
 - ✅ Added validated medical severity scales (PASI, SCORAD)
 - ✅ Implemented evidence-based treatment recommendations
 - ✅ Added ocular analysis for systemic disease detection
