@@ -1,6 +1,6 @@
 # 📚 Project Documentation Index
 
-Quick navigation to all project documentation and resources.
+Quick navigation to all project documentation and resources
 
 ## 🎯 Getting Started
 
