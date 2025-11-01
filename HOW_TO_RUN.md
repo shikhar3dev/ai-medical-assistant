@@ -2,7 +2,7 @@
 
 ## ✅ Setup Complete!
 
-Your data has been downloaded and partitioned. You're ready to train!
+Your data has been downloaded and partitioned. You're ready to train!.
 
 ## 🎯 Quick Start (3 Easy Steps)
 
