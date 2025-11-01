@@ -2,7 +2,7 @@
 
 ## 🎯 **Upload Your Medical AI to GitHub**
 
-Follow these steps to upload your production-ready medical AI system to GitHub for deployment!
+Follow these steps to upload your production-ready medical AI system to GitHub for deployment!.
 
 ---
 
