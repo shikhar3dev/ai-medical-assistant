@@ -1,4 +1,4 @@
-# Federated Learning Configuration
+# Federated Learning Configuration.
 
 federated:
   # Number of federated learning rounds
