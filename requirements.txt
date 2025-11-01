@@ -1,4 +1,4 @@
-# Core ML and Deep Learning
+# Core ML and Deep Learning.
 torch>=2.0.0
 torchvision>=0.15.0
 numpy>=1.24.0
