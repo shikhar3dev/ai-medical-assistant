@@ -91,4 +91,4 @@ Once deployed locally, anyone on your WiFi can access:
 
 ## 🎉 **Your Medical AI is Ready to Help Save Lives!**
 
-Choose your deployment method and start making a difference in healthcare! 🏥✨
+Choose your deployment method and start making a difference in healthcare!.🏥✨
