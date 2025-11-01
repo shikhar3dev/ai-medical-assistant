@@ -7,4 +7,5 @@ echo.
 echo Connecting to server at localhost:8080
 echo.
 python federated\client.py --client-id 1
+
 pause
