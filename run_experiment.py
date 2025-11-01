@@ -7,7 +7,6 @@ import yaml
 from pathlib import Path
 import sys
 
-
 def run_command(cmd, cwd=None, wait=True):
     """
     Run a command.
