@@ -1,4 +1,4 @@
-"""LIME-based Explainability for Disease Prediction Models"""
+"""LIME-based Explainability for Disease Prediction Models."""
 
 import argparse
 from pathlib import Path
