@@ -12,7 +12,7 @@ https://shikhar3dev-ai-medical-assistant-enhanced-dashboard-xyz.streamlit.app
 
 ## ⚡ **Quick Deploy Steps**
 
-### **Step 1: Upload to GitHub**
+### **Step 1: Upload to GitHub.**
 **Double-click:** `upload_to_github.bat`
 
 This will:
