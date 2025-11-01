@@ -1,4 +1,4 @@
-"""Tests for Privacy Components"""
+"""Tests for Privacy Components."""
 
 import pytest
 import torch
