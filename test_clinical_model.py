@@ -1,6 +1,4 @@
-"""
-Test the clinical-grade dermatology model
-"""
+"""Test the clinical-grade dermatology model"""
 
 import numpy as np
 from PIL import Image
