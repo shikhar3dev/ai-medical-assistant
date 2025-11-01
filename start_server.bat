@@ -8,4 +8,5 @@ echo Server starting on localhost:8080
 echo Waiting for 3 clients to connect...
 echo.
 python federated\server.py --rounds 10 --min-clients 3
+
 pause
