@@ -50,6 +50,6 @@ echo 5. Main file: enhanced_dashboard.py
 echo 6. Click "Deploy"
 echo.
 echo 🎉 Your AI Medical Assistant will be live on the internet!
-echo ============================================================
+echo ===========================================================
 
 pause
