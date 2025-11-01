@@ -1,6 +1,6 @@
 """
 Enhanced Dermatological Analysis Module
-Provides specialized analysis for skin conditions and lesions
+Provides specialized analysis for skin conditions and lesions.
 """
 
 import numpy as np
