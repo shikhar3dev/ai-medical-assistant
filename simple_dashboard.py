@@ -1,4 +1,4 @@
-"""Simple working dashboard"""
+"""Simple working dashboard."""
 
 import sys
 from pathlib import Path
