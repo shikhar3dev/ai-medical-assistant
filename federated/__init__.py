@@ -1,4 +1,4 @@
-"""Federated Learning Core Module"""
+"""Federated Learning Core Module."""
 
 from .models import DiseasePredictor
 from .client import FlowerClient
