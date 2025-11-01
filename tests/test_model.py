@@ -1,4 +1,4 @@
-"""Tests for Model Components"""
+"""Tests for Model Components."""
 
 import pytest
 import torch
