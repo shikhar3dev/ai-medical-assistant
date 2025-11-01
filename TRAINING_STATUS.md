@@ -112,4 +112,4 @@ Your federated learning system is working correctly. The clients have successful
 
 ---
 
-**Current Status**: 🔄 **TRAINING IN PROGRESS** - Everything is working as expected!
+**Current Status**: 🔄 **TRAINING IN PROGRESS** - Everything is working as expected!.
