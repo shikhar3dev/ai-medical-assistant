@@ -1,7 +1,6 @@
 [build]
   publish = "."
   command = "echo 'Streamlit app ready for deployment'"
-
 [build.environment]
   PYTHON_VERSION = "3.9"
 
