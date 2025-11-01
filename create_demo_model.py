@@ -1,4 +1,4 @@
-"""Create a demo model for dashboard"""
+"""Create a demo model for dashboard."""
 
 import sys
 from pathlib import Path
