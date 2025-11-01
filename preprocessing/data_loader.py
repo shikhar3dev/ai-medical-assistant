@@ -1,4 +1,4 @@
-"""Data Loading Utilities for Medical Datasets"""
+"""Data Loading Utilities for Medical Datasets."""
 
 import argparse
 from pathlib import Path
