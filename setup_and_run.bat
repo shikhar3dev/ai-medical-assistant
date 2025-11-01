@@ -41,5 +41,5 @@ echo.
 echo After training completes, launch dashboard:
 echo   Double-click: start_dashboard.bat
 echo.
-echo ============================================================
+echo ===========================================================
 pause
