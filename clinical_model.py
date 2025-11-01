@@ -1,6 +1,6 @@
 """
-Clinical-Grade Medical AI Model
-Real diagnostic capabilities based on medical literature and clinical data
+Clinical-Grade Medical AI Model.
+Real diagnostic capabilities based on medical literature and clinical data.
 """
 
 import numpy as np
