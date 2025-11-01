@@ -7,4 +7,5 @@ echo.
 echo Dashboard will open at: http://localhost:8501
 echo.
 streamlit run dashboard\app.py
+
 pause
