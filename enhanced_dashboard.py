@@ -1,4 +1,4 @@
-"""Enhanced User-Friendly Medical Dashboard with Camera Support"""
+"""Enhanced User-Friendly Medical Dashboard with Camera Support."""
 
 import sys
 from pathlib import Path
