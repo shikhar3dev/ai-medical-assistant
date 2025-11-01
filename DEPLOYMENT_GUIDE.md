@@ -316,4 +316,4 @@ def log_prediction(patient_data, risk_score):
 
 ## 🎉 **Your Medical AI is Ready for the World!**
 
-Choose your deployment method and make your privacy-preserving federated learning system available to help healthcare professionals worldwide! 🏥✨
+Choose your deployment method and make your privacy-preserving federated learning system available to help healthcare professionals worldwide!.🏥✨
