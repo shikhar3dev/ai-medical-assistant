@@ -108,7 +108,7 @@
 
 ## 🎉 **CONGRATULATIONS!**
 
-**Your Privacy-Preserving Federated Learning Medical AI Assistant is now LIVE and helping healthcare professionals worldwide!**
+**Your Privacy-Preserving Federated Learning Medical AI Assistant is now LIVE and helping healthcare professionals worldwide!.**
 
 **🌐 Access it anytime at:**
 `https://ai-medical-assistant-i7wnvjqdc7mncybhr83cm6.streamlit.app`
