@@ -1,4 +1,4 @@
-"""Verify Installation and Setup"""
+"""Verify Installation and Setup."""
 
 import sys
 import importlib
