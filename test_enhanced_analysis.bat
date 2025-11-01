@@ -19,5 +19,4 @@ echo Navigate to the "Medical Imaging" section to test the enhanced analysis
 echo.
 
 streamlit run enhanced_dashboard.py --server.port 8502 --server.headless true
-
 pause
