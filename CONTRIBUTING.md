@@ -12,7 +12,7 @@ Thank you for your interest in contributing! This document provides guidelines f
    ```
 3. **Create a branch** for your feature:
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feature/your-feature-name.
    ```
 
 ## Development Setup
