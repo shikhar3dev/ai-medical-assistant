@@ -8,7 +8,7 @@ This project implements a federated learning pipeline that:
 - **Preserves Privacy**: Uses differential privacy and secure aggregation
 - **Explains Predictions**: Generates patient-level and global explanations via SHAP and LIME
 - **Simulates Real Hospitals**: Partitions data across multiple heterogeneous clients
-- **Predicts Disease Risk**: Focuses on cardiovascular and diabetes risk prediction
+- **Predicts Disease Risk**: Focuses on cardiovascular and diabetes risk prediction.
 
 ## 🏗️ Architecture
 
