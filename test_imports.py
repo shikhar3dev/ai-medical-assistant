@@ -14,6 +14,7 @@ print()
 try:
     from federated.models import DiseasePredictor
     print("✅ federated.models imported successfully")
+    
 except Exception as e:
     print(f"❌ federated.models failed: {e}")
 
