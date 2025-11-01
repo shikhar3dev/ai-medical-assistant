@@ -9,6 +9,7 @@
     "build": "echo 'Build complete - Streamlit app ready'",
     "test": "python -m pytest tests/"
   },
+  
   "keywords": [
     "healthcare",
     "ai",
