@@ -1,6 +1,6 @@
 """
 Ocular Analysis Module - Based on Google Health Research
-Detects systemic diseases from external eye photographs
+Detects systemic diseases from external eye photographs.
 """
 
 import numpy as np
