@@ -1,4 +1,4 @@
-"""Check training status and show progress"""
+"""Check training status and show progress."""
 
 import sys
 from pathlib import Path
